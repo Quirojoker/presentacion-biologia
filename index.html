@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biologia general</title>
+    <!-- Librerías externas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Contenedor principal */
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Slides */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Slide backgrounds */
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Slide 1 - Titulo */
+        .slide-1 .slide-bg {
+            background: linear-gradient(135deg, #11b52f 0%, #2d7c44 100%);
+        }
+
+        /* Slide 2 - Observación y Problema */
+        .slide-2 .slide-bg {
+            background: linear-gradient(135deg, #2b6b7b 0%, #12b9d7 100%);
+        }
+
+        /* Slide 3 - Hipótesis */
+        .slide-3 .slide-bg {
+            background: linear-gradient(135deg, #c3540b 0%, #78501c 100%);
+        }
+
+        /* Slide 4 - Experimentación */
+        .slide-4 .slide-bg {
+            background: linear-gradient(135deg, #612330 0%, #a10e1f 100%);
+        }
+
+        /* Slide 5 - Resultados*/
+        .slide-5 .slide-bg {
+            background: linear-gradient(135deg, #080ec3 0%, #223e7a 100%);
+        }
+
+        /* Slide 6 - Conclusión */
+        .slide-6 .slide-bg {
+            background: linear-gradient(135deg, #732764 0%, #cd089f 100%);
+        }
+
+        /* Formas decorativas */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: #fff;
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: #fff;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            top: 50%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -30px) rotate(90deg); }
+            50% { transform: translate(-20px, 20px) rotate(180deg); }
+            75% { transform: translate(20px, 30px) rotate(270deg); }
+        }
+
+        /* Contenido de slides */
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.2);
+            line-height: 1.2;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .slide-subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+
+        .slide-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            animation: slideInUp 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Grid de características */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out 0.6s both;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .feature-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Lista de estadísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
+            text-align: center;
+            animation: slideInUp 0.8s ease-out 0.6s both;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Lista con iconos */
+        .icon-list {
+            list-style: none;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .icon-list li {
+            font-size: 1.3rem;
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: slideInUp 0.8s ease-out both;
+        }
+
+        .icon-list li:nth-child(1) { animation-delay: 0.4s; }
+        .icon-list li:nth-child(2) { animation-delay: 0.5s; }
+        .icon-list li:nth-child(3) { animation-delay: 0.6s; }
+        .icon-list li:nth-child(4) { animation-delay: 0.7s; }
+        .icon-list li:nth-child(5) { animation-delay: 0.8s; }
+
+        .icon-list li i {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        /* Controles de navegación */
+        .nav-controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Indicadores de slide */
+        .slide-indicators {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #fff;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        /* Barra de progreso */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fff, #ddd);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        /* Número de slide */
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            z-index: 100;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Logo / marca */
+        .brand {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand i {
+            font-size: 1.5rem;
+        }
+
+        /* Slide de título */
+        .title-slide .slide-title {
+            font-size: 5rem;
+            background: linear-gradient(135deg, #fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: 20px;
+            animation: slideInUp 0.8s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Contenedor de la tabla */
+        .results-table-container {
+            margin: 30px auto;
+            width: 90%;
+            max-width: 800px;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        /* Tabla */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Poppins', sans-serif; /* Ajusta según tu fuente */
+            text-align: center;
+        }
+
+        /* Encabezado */
+        .results-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Ajusta a tus colores */
+            color: white;
+        }
+
+        .results-table th {
+            padding: 18px 15px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Celdas del cuerpo */
+        .results-table td {
+            padding: 16px 15px;
+            font-size: 1rem;
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Filas alternas */
+        .results-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .results-table tbody tr:hover {
+            background-color: #eef2ff;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Última fila sin borde */
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Etiquetas de estado (badges) */
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-danger {
+            background-color: #ffe0e0;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .badge-success {
+            background-color: #e0f2e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+
+
+        
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+
+            .slide-title {
+                font-size: 2.5rem;
+            }
+
+            .title-slide .slide-title {
+                font-size: 3rem;
+            }
+
+            .slide-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .slide-text {
+                font-size: 1.1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+            }
+
+            .nav-controls {
+                bottom: 20px;
+                padding: 10px 20px;
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .brand {
+                top: 20px;
+                left: 20px;
+                font-size: 1rem;
+            }
+
+            .slide-counter {
+                top: 20px;
+                right: 20px;
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .results-table th,
+            .results-table td {
+                padding: 12px 8px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Animación de entrada para el contenido */
+        .slide.active .slide-title,
+        .slide.active .slide-subtitle,
+        .slide.active .slide-text,
+        .slide.active .feature-card,
+        .slide.active .stat-item,
+        .slide.active .icon-list li,
+        .slide.active .cta-button {
+            animation-play-state: running;
+        }
+    </style>
+</head>
+    <body>
+        <div class="presentation-container">
+            <!-- Barra de progreso -->
+            <div class="progress-bar" id="progressBar"></div>
+
+            <!-- Marca -->
+            <div class="brand">
+                <i class="fa-solid fa-dna"></i>
+                <span>Grupo 2</span>
+            </div>
+
+            <!-- Contador de slides -->
+            <div class="slide-counter" id="slideCounter">1 / 6</div>
+
+            <!-- Slide 1: Título -->
+            <div class="slide slide-1 active title-slide" data-slide="0">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="slide-content">
+                    <h1 class="slide-title">"La Dieta del Picor" </h1>
+                    <p class="slide-subtitle">Método científico en un caso de alergia alimentaria canina</p>
+                    <button class="cta-button" onclick="nextSlide()">
+                        Comenzar <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slide 2: Observacion + Problema -->
+            <div class="slide slide-2" data-slide="1">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title">Observación</h2>
+                    <h3 class="slide-title">¿Qué se Observo?</h3>
+                    <p class="slide-text">
+                        🐾Perra Golden Retriever de 16 meses.
+                        <br>
+                         🐾Se rasca intensamente el lomo y las patas durante gran parte del día.
+                        <br>
+                         🐾Presenta piel enrojecida.
+                        <br>
+                         🐾Los síntomas comenzaron al cambiar su concentrado a uno cuya proteína principal es el pollo.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">+1 año</span>
+                            <span class="stat-label">Cachorra</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">rasca</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">¿pollo?</span>
+                            <span class="stat-label">Problema</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Planteamieno del Problema -->
+            <div class="slide slide-3" data-slide="2">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title">Planteamiento del Problema</h2>
+                    <h3 class="slide-subtitle">
+                        ¿Es la Proteína del pollo la Causante de la reacción alérgica (rascado y enorojeciemiento) en la perra?
+                    </h3>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <span class="feature-icon"><i class="fas fa-brain"></i></span>
+                            <h3 class="feature-title">Clara</h3>
+                            <p class="feature-desc">Ser Objetivos con la pregunta</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon"><i class="fa-solid fa-pen-ruler"></i></span>
+                            <h3 class="feature-title">Medible</h3>
+                            <p class="feature-desc">Se Puede contar el Rascado</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon"><i class="fa-solid fa-drumstick-bite"></i></span>
+                            <h3 class="feature-title">Comprobable</h3>
+                            <p class="feature-desc">Se puede quitar el pollo</p>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Experimentación -->
+            <div class="slide slide-4" data-slide="3">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title">Experimentación</h2>
+                    <p class="slide-subtitle">Diseño del Experimento</p>
+                    <ul class="icon-list">
+                        <li><i class="fa-solid fa-bone"></i> Variable indenpendiente - tipo de proteina en la dieta (pollo-salmón)</li>
+                        <li><i class="fa-solid fa-bullseye"></i> Variable dependiente - N.° de episodios de rascado al día/enrojecimiento.</li>
+                        <li><i class="fa-solid fa-dog"></i> Variables controladas - misma perra, misma cantidad de comida sin premios ni sobras, 4 semanas, registro diario</li>
+                        <li><i class="fa-solid fa-drumstick-bite"></i> Grupo de referencia - Período con dieta de pollo (15 rascados/día)</li>
+                        <li><i class="fa-solid fa-fish-fins"></i> Grupo experimental - Período con dieta de salmón</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: Resultados -->
+            <div class="slide slide-5" data-slide="4">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title">Análisis de Resultados</h2>
+                    <div class="results-table-container">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Semana</th>
+                                <th>Rascado/día</th>
+                                <th>Enrojecimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Antes (con pollo)</td>
+                                <td>~15 veces</td>
+                                <td><span class="badge badge-danger">Sí</span></td>
+                            </tr>
+                            <tr>
+                                <td>Semana 3 (con salmón)</td>
+                                <td>1-2 veces</td>
+                                <td><span class="badge badge-success">No</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    <p class="slide-text" style="margin-top: 40px;">
+                        Hay una disminución drástica del rascado (de 15 a 1-2).
+                        <br>
+                        Desaparece el enrojecimiento.
+                        <br>
+                        Esto coincide con la predicción de la hipótesis.
+                        <br>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Slide 6: Conclusión -->
+            <div class="slide slide-6" data-slide="5">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title">Conclusión</h2>
+                    <h3 class="slide-subtitle">
+                       Interpretación de los resultados
+                    </h3>
+                    <p class="slide-text">
+                        ✅ La hipótesis se acepta: la perra presenta hipersensibilidad alimentaria al pollo.
+                    </p>
+                    <ul class="icon-list">
+                        <li><i class="fa-solid fa-bone"></i> los resultados coinciden con la predicción</li>
+                        <li><i class="fa-solid fa-bullseye"></i> se controlan las variables de confusión</li>
+                        <li><i class="fa-solid fa-dog"></i> el cambio fue significativo y sostenido</li>
+                    </ul>
+                </div>
+            </div>
+            
+             <!-- Slide 7:integrantes -->
+            <div class="slide slide-7" data-slide="6">
+                <div class="slide-bg"></div>
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title">Integrantes</h2>
+                    <ul class="icon-list">
+                        <li><i class="fa-solid fa-bone"></i> Juan Sebastian Arango Quiroga</li>
+                        <li><i class="fa-solid fa-bullseye"></i>N.N</li>
+                        <li><i class="fa-solid fa-dog"></i>N.N</li>
+                        <li><i class="fa-solid fa-drumstick-bite"></i>N.N</li>
+                        <li><i class="fa-solid fa-fish-fins"></i>N.N</li>
+                    </ul>
+                    
+                    <button class="cta-button" onclick="restartPresentation()">
+                        <i class="fas fa-redo" style="margin-right: 10px;"></i> Volver al Inicio
+                    </button>
+                </div>
+            </div>
+
+            <!-- Controles de navegación -->
+            <div class="nav-controls">
+                <button class="nav-btn" id="prevBtn" onclick="prevSlide()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="slide-indicators" id="indicators"></div>
+                <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            // Variables globales
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            const progressBar = document.getElementById('progressBar');
+            const slideCounter = document.getElementById('slideCounter');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicatorsContainer = document.getElementById('indicators');
+
+            // Crear indicadores
+            function createIndicators() {
+                for (let i = 0; i < totalSlides; i++) {
+                    const indicator = document.createElement('div');
+                    indicator.classList.add('indicator');
+                    if (i === 0) indicator.classList.add('active');
+                    indicator.addEventListener('click', () => goToSlide(i));
+                    indicatorsContainer.appendChild(indicator);
+                }
+            }
+
+            // Actualizar UI
+            function updateUI() {
+                // Actualizar slides
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active', 'prev');
+                    if (index === currentSlide) {
+                        slide.classList.add('active');
+                    } else if (index < currentSlide) {
+                        slide.classList.add('prev');
+                    }
+                });
+
+                // Actualizar indicadores
+                const indicators = document.querySelectorAll('.indicator');
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentSlide);
+                });
+
+                // Actualizar barra de progreso
+                const progress = ((currentSlide + 1) / totalSlides) * 100;
+                progressBar.style.width = progress + '%';
+
+                // Actualizar contador
+                slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+                // Actualizar botones
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+
+                // Actualizar indicadores
+                const dots = document.querySelectorAll('.indicator');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+
+            // Navegación
+            function nextSlide() {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateUI();
+                }
+            }
+
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateUI();
+                }
+            }
+
+            function goToSlide(index) {
+                if (index >= 0 && index < totalSlides) {
+                    currentSlide = index;
+                    updateUI();
+                }
+            }
+
+            function restartPresentation() {
+                currentSlide = 0;
+                updateUI();
+            }
+
+            // Teclado
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    goToSlide(0);
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    goToSlide(totalSlides - 1);
+                }
+            });
+
+            // Touch / Swipe
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+            }
+
+            // Inicializar
+            createIndicators();
+            updateUI();
+
+            // Precarga de animaciones
+            window.addEventListener('load', () => {
+                document.body.style.opacity = '1';
+            });
+        </script>
+    </body>
+</html>
